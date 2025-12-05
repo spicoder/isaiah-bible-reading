@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion"; // <--- Added 'Variants'
 import {
   ChevronLeft,
   X,
@@ -10,10 +10,10 @@ import {
   MessageCircle,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChapterData, Verse, VisualScene } from "@/app/lib/data";
 import { useFavorites } from "@/app/lib/hooks";
-import Image from "next/image";
 
 // --- Types ---
 type StoryItem =
@@ -74,12 +74,9 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleNext, handlePrev]);
 
-  // --- Auto-Advance Timer Logic ---
-  // We don't use setInterval here; we let the Framer Motion "onAnimationComplete" trigger next.
-  // See the Progress Bar component below.
-
   // --- Variants ---
-  const variants = {
+  // We explicitly type this as 'Variants' to fix the easing type error
+  const variants: Variants = {
     enter: (direction: number) => ({
       x: direction > 0 ? "100%" : "-100%",
       opacity: 0,
@@ -237,19 +234,19 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
           className="absolute inset-0 flex flex-col justify-center items-center px-6 md:px-0"
         >
           {currentSlide.type === "visual" ? (
-            // --- VISUAL SLIDE ---
+            // --- VISUAL SLIDE (UPDATED) ---
             <div className="w-full h-full flex flex-col items-center justify-center text-center relative">
               {/* REAL BACKGROUND IMAGE */}
-              <div className="absolute inset-0 -z-10">
+              <div className="absolute inset-0">
                 <Image
                   src={currentSlide.data.imageSrc}
                   alt={currentSlide.data.alt}
                   fill
-                  className="object-cover opacity-60" // opacity-60 darkens it so text pops
-                  priority // Loads immediately
+                  className="object-cover opacity-60"
+                  priority
                 />
-                {/* Gradient Overlay to make text readable */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/40 to-black/60"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60"></div>
               </div>
 
               <motion.div
@@ -258,16 +255,20 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                 transition={{ delay: 0.2 }}
                 className="relative z-10 p-6"
               >
-                <h2 className="text-4xl md:text-7xl font-black font-serif text-white mb-6 leading-none tracking-tighter drop-shadow-2xl">
-                  {currentSlide.data.title}
-                </h2>
-                {/* Floating "Visual Scene" Badge */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-8 shadow-xl">
                   <Map size={16} className="text-amber-400" />
                   <span className="text-xs font-bold uppercase tracking-widest text-white">
-                    {currentSlide.data.description}
+                    Visual Context
                   </span>
                 </div>
+
+                <h2 className="text-5xl md:text-7xl font-black font-serif text-white mb-6 leading-none tracking-tighter drop-shadow-2xl">
+                  {currentSlide.data.title}
+                </h2>
+
+                <p className="text-amber-300 font-mono text-xs uppercase tracking-[0.2em] font-bold drop-shadow-md">
+                  {currentSlide.data.description}
+                </p>
               </motion.div>
             </div>
           ) : (
