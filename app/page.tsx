@@ -1,9 +1,19 @@
 // app/page.tsx
 "use client";
 
+import { useState } from "react"; // Added for pagination state
 import Link from "next/link";
 import Image from "next/image";
-import { Sparkles, Play, Heart, Bookmark, CheckCircle2 } from "lucide-react";
+// Added Chevron icons for pagination controls
+import {
+  Sparkles,
+  Play,
+  Heart,
+  Bookmark,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { isaiahChapters } from "@/app/lib/data";
 import { useProgress } from "@/app/lib/hooks";
 
@@ -11,11 +21,23 @@ export default function Home() {
   const chapters = Object.entries(isaiahChapters);
   const { completedChapters, isLoaded } = useProgress();
 
+  // --- Pagination Logic ---
+  const [currentPage, setCurrentPage] = useState(1);
+  const CHAPTERS_PER_PAGE = 4;
+
+  const totalPages = Math.ceil(chapters.length / CHAPTERS_PER_PAGE);
+  const startIndex = (currentPage - 1) * CHAPTERS_PER_PAGE;
+  const paginatedChapters = chapters.slice(
+    startIndex,
+    startIndex + CHAPTERS_PER_PAGE
+  );
+  // -------------------------
+
   // Find the first chapter ID that isn't completed to determine the "next" chapter
+  // Note: This remains calculated from the full list so the Hero is always accurate
   const nextChapterId =
     chapters.find(([id]) => !completedChapters.includes(id))?.[0] || "1";
 
-  // Get the data for the next unread chapter
   const nextChapter = isaiahChapters[nextChapterId];
 
   return (
@@ -46,7 +68,6 @@ export default function Home() {
         <div className="bg-stone-900 rounded-4xl p-8 text-white relative overflow-hidden min-h-[350px] flex flex-col justify-end shadow-2xl">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
 
-          {/* Background Visual */}
           {nextChapter?.visuals[0] && (
             <div className="absolute inset-0 z-0">
               <Image
@@ -69,12 +90,10 @@ export default function Home() {
               </span>
             </div>
 
-            {/* Dynamic Title */}
             <h2 className="text-4xl font-serif font-bold mb-4">
               Chapter {nextChapter.chapter}
             </h2>
 
-            {/* NEW: Multi-line Outline Summary */}
             <div className="flex flex-col gap-2 mb-8 max-w-md">
               {nextChapter?.visuals.map((visual, index) => (
                 <div key={index} className="flex gap-3 items-start">
@@ -101,12 +120,19 @@ export default function Home() {
 
       {/* Chapters Feed */}
       <section className="px-6">
-        <h3 className="text-sm font-bold uppercase tracking-widest text-stone-400 mb-6">
-          Chapters
-        </h3>
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-stone-400">
+            Chapters
+          </h3>
+          {/* Page indicator for mobile/desktop layout help */}
+          <span className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter">
+            Page {currentPage} of {totalPages}
+          </span>
+        </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {chapters.map(([id, chapter]) => {
+          {/* Map through paginatedChapters instead of all chapters */}
+          {paginatedChapters.map(([id, chapter]) => {
             const isDone = completedChapters.includes(id);
             const thumbnail = chapter.visuals[0]?.imageSrc;
 
@@ -143,6 +169,40 @@ export default function Home() {
             );
           })}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-6 mt-10">
+            <button
+              onClick={() => {
+                setCurrentPage((p) => Math.max(1, p - 1));
+                window.scrollTo({ top: 0, behavior: "smooth" }); // Optional scroll to top
+              }}
+              disabled={currentPage === 1}
+              className="p-3 rounded-full bg-white border border-stone-200 text-stone-600 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200 transition-all disabled:opacity-20 disabled:cursor-not-allowed shadow-sm"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            <div className="flex flex-col items-center">
+              <span className="text-xs font-black text-stone-900">
+                {currentPage}
+              </span>
+              <div className="w-4 h-0.5 bg-amber-500 rounded-full" />
+            </div>
+
+            <button
+              onClick={() => {
+                setCurrentPage((p) => Math.min(totalPages, p + 1));
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              disabled={currentPage === totalPages}
+              className="p-3 rounded-full bg-white border border-stone-200 text-stone-600 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200 transition-all disabled:opacity-20 disabled:cursor-not-allowed shadow-sm"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        )}
       </section>
     </main>
   );
