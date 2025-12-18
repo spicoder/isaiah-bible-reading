@@ -11,9 +11,12 @@ export default function Home() {
   const chapters = Object.entries(isaiahChapters);
   const { completedChapters, isLoaded } = useProgress();
 
-  // Find the first chapter ID that isn't completed to determine where to "Start Reading"
+  // Find the first chapter ID that isn't completed to determine the "next" chapter
   const nextChapterId =
     chapters.find(([id]) => !completedChapters.includes(id))?.[0] || "1";
+
+  // Get the data for the next unread chapter
+  const nextChapter = isaiahChapters[nextChapterId];
 
   return (
     <main className="min-h-screen bg-[#FDFBF7] pb-24">
@@ -40,22 +43,49 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="px-4 mb-8">
-        <div className="bg-stone-900 rounded-4xl p-8 text-white relative overflow-hidden min-h-[300px] flex flex-col justify-end shadow-2xl">
+        <div className="bg-stone-900 rounded-4xl p-8 text-white relative overflow-hidden min-h-[350px] flex flex-col justify-end shadow-2xl">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
+
+          {/* Background Visual */}
+          {nextChapter?.visuals[0] && (
+            <div className="absolute inset-0 z-0">
+              <Image
+                src={nextChapter.visuals[0].imageSrc}
+                alt="Background"
+                fill
+                className="object-cover opacity-40"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/60 to-transparent"></div>
+            </div>
+          )}
+
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full mb-4 border border-white/10">
               <Sparkles size={12} className="text-amber-400" />
               <span className="text-[10px] font-bold uppercase tracking-widest">
-                Featured Reading
+                {isLoaded && completedChapters.includes(nextChapterId)
+                  ? "Review Chapter"
+                  : "Next Reading"}
               </span>
             </div>
-            <h2 className="text-4xl font-serif font-bold mb-2">
-              The Great Vision
+
+            {/* Dynamic Title */}
+            <h2 className="text-4xl font-serif font-bold mb-4">
+              Chapter {nextChapter.chapter}
             </h2>
-            <p className="text-stone-400 text-sm mb-6 max-w-xs">
-              Start your journey through the prophetic visions of Isaiah,
-              reimagined.
-            </p>
+
+            {/* NEW: Multi-line Outline Summary */}
+            <div className="flex flex-col gap-2 mb-8 max-w-md">
+              {nextChapter?.visuals.map((visual, index) => (
+                <div key={index} className="flex gap-3 items-start">
+                  <div className="w-1 h-1 rounded-full bg-amber-500 mt-2 shrink-0" />
+                  <p className="text-stone-300 text-sm leading-tight font-medium">
+                    {visual.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             <Link
               href={`/isaiah/${nextChapterId}`}
               className="bg-white text-black px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs inline-flex items-center gap-2 hover:scale-105 transition-transform w-fit"
@@ -82,8 +112,7 @@ export default function Home() {
 
             return (
               <Link key={id} href={`/isaiah/${id}`} className="group">
-                <div className="aspect-3/4 bg-linear-180 from-black/70 to-black rounded-3xl border-2 border-stone-100 relative overflow-hidden transition-all duration-300 hover:border-amber-400 hover:shadow-lg">
-                  {/* Upgrade: First Visual as Thumbnail */}
+                <div className="aspect-3/4 bg-stone-800 rounded-3xl border-2 border-stone-100 relative overflow-hidden transition-all duration-300 hover:border-amber-400 hover:shadow-lg">
                   {thumbnail && (
                     <div className="absolute inset-0 z-0">
                       <Image
@@ -98,10 +127,14 @@ export default function Home() {
                   <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
                     <div className="flex justify-end">
                       {isDone && (
-                        <CheckCircle2 size={20} className="text-green-600" />
+                        <CheckCircle2
+                          size={28}
+                          strokeWidth={3}
+                          className="text-green-600 drop-shadow-md"
+                        />
                       )}
                     </div>
-                    <h4 className="font-serif text-xl font-bold text-white leading-tight group-hover:text-amber-600 transition-colors">
+                    <h4 className="font-serif text-xl font-bold text-white leading-tight group-hover:text-amber-400 transition-colors drop-shadow-lg">
                       Chapter {chapter.chapter}
                     </h4>
                   </div>

@@ -1,7 +1,14 @@
 "use client";
-import { useState, useCallback, useEffect, Suspense } from "react";
+import { useState, useCallback, useEffect, Suspense, useMemo } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { ChevronLeft, X, Map, Heart, MessageCircle } from "lucide-react";
+import {
+  ChevronLeft,
+  X,
+  Map,
+  Heart,
+  MessageCircle,
+  Layers,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,28 +17,48 @@ import { useFavorites, useProgress } from "@/app/lib/hooks";
 
 // --- Types ---
 type StoryItem =
-  | { type: "visual"; data: VisualScene; id: string }
-  | { type: "verse"; data: Verse; id: string };
+  | { type: "visual"; data: VisualScene; id: string; segmentIndex: number }
+  | { type: "verse"; data: Verse; id: string; segmentIndex: number };
 
 const getStoryItems = (chapter: ChapterData): StoryItem[] => {
   const items: StoryItem[] = [];
+  const sortedVisuals = [...chapter.visuals].sort(
+    (a, b) => a.startVerse - b.startVerse
+  );
   const sortedVerses = [...chapter.verses].sort((a, b) => a.verse - b.verse);
 
   sortedVerses.forEach((verse) => {
-    const scene = chapter.visuals.find((v) => v.startVerse === verse.verse);
-    if (scene) {
-      items.push({ type: "visual", data: scene, id: `visual-${verse.verse}` });
+    // Find which segment (visual) this verse belongs to
+    const segmentIndex = sortedVisuals.findLastIndex(
+      (v) => v.startVerse <= verse.verse
+    );
+    const visual = sortedVisuals[segmentIndex];
+
+    // If this is the start of a new segment, add the visual/outline slide first
+    if (verse.verse === visual.startVerse) {
+      items.push({
+        type: "visual",
+        data: visual,
+        id: `visual-${verse.verse}`,
+        segmentIndex,
+      });
     }
-    items.push({ type: "verse", data: verse, id: `verse-${verse.verse}` });
+
+    items.push({
+      type: "verse",
+      data: verse,
+      id: `verse-${verse.verse}`,
+      segmentIndex,
+    });
   });
   return items;
 };
 
 function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
   const currentChapter = chapter.chapter;
-  const slides = getStoryItems(chapter);
+  const slides = useMemo(() => getStoryItems(chapter), [chapter]);
+  const totalSegments = chapter.visuals.length;
 
-  // Upgrade: Initialize slide from URL parameter to support returning from Gems page
   const searchParams = useSearchParams();
   const initialSlide = parseInt(searchParams.get("slide") || "0");
 
@@ -46,7 +73,13 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
   const currentSlide = slides[currentIndex];
   const isLastSlide = currentIndex === slides.length - 1;
 
-  // Upgrade: Mark chapter as completed when the user reaches the last slide
+  // Segment logic: filter slides belonging to the current visual group
+  const currentSegmentIndex = currentSlide.segmentIndex;
+  const segmentSlides = slides.filter(
+    (s) => s.segmentIndex === currentSegmentIndex
+  );
+  const indexInSegment = segmentSlides.indexOf(currentSlide);
+
   useEffect(() => {
     if (isLastSlide) {
       markAsCompleted(String(currentChapter));
@@ -68,7 +101,6 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
     }
   }, [currentIndex]);
 
-  // Keyboard support
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") handleNext();
@@ -98,34 +130,50 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
 
   return (
     <div className="fixed inset-0 bg-black text-white font-sans overflow-hidden">
-      {/* 1. PROGRESS BARS */}
-      <div className="absolute top-2 left-2 right-2 z-50 flex gap-1 h-1">
-        {slides.map((_, idx) => (
-          <div
-            key={idx}
-            className="flex-1 h-full rounded-full bg-white/20 overflow-hidden"
-          >
-            {idx === currentIndex ? (
-              <motion.div
-                className="h-full bg-white"
-                initial={{ width: "0%" }}
-                animate={{ width: isPaused ? "0%" : "100%" }}
-                transition={{ duration: 10, ease: "linear" }}
-                onAnimationComplete={() => !isPaused && handleNext()}
-              />
-            ) : (
-              <div
-                className={`h-full bg-white ${
-                  idx < currentIndex ? "w-full" : "w-0"
-                }`}
-              />
-            )}
-          </div>
-        ))}
+      {/* 1. SEGMENTED PROGRESS BARS */}
+      <div className="absolute top-2 left-2 right-2 z-50 flex flex-col gap-2">
+        <div className="flex gap-1 h-1">
+          {segmentSlides.map((_, idx) => (
+            <div
+              key={idx}
+              className="flex-1 h-full rounded-full bg-white/20 overflow-hidden"
+            >
+              {idx === indexInSegment ? (
+                <motion.div
+                  className="h-full bg-white"
+                  initial={{ width: "0%" }}
+                  animate={{ width: isPaused ? "0%" : "100%" }}
+                  transition={{ duration: 10, ease: "linear" }}
+                  onAnimationComplete={() => !isPaused && handleNext()}
+                />
+              ) : (
+                <div
+                  className={`h-full bg-white ${
+                    idx < indexInSegment ? "w-full" : "w-0"
+                  }`}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Segment Breadcrumb */}
+        <div className="flex justify-center gap-1.5">
+          {Array.from({ length: totalSegments }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                i === currentSegmentIndex
+                  ? "w-4 bg-amber-500"
+                  : "w-1 bg-white/30"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* 2. HEADER */}
-      <div className="absolute top-6 left-4 right-4 z-40 flex justify-between items-start">
+      <div className="absolute top-10 left-4 right-4 z-40 flex justify-between items-start">
         <div className="flex items-center gap-3">
           {currentSlide.type === "verse" ? (
             <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
@@ -134,9 +182,11 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
               </span>
             </div>
           ) : (
-            <div className="flex items-center gap-2 bg-amber-500/90 text-black px-3 py-1.5 rounded-full">
+            <div className="flex items-center gap-2 bg-amber-500 text-black px-3 py-1.5 rounded-full shadow-lg">
               <Map size={14} />
-              <span className="font-bold text-sm tracking-wide">Outline</span>
+              <span className="font-bold text-xs uppercase tracking-tighter">
+                Part {currentSegmentIndex + 1} of {totalSegments}
+              </span>
             </div>
           )}
         </div>
@@ -177,7 +227,6 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              // Upgrade: Send current slide index in returnUrl
               const ref = encodeURIComponent(
                 `Isaiah ${currentChapter}:${currentSlide.data.verse}`
               );
@@ -203,16 +252,12 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
           onClick={handlePrev}
           onMouseDown={() => setIsPaused(true)}
           onMouseUp={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
         />
         <div
           className="w-[70%] h-full"
           onClick={handleNext}
           onMouseDown={() => setIsPaused(true)}
           onMouseUp={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
         />
       </div>
 
@@ -237,7 +282,7 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
                   className="object-cover opacity-60"
                   priority
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-black/60"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60"></div>
               </div>
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -246,14 +291,19 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
                 className="relative z-10 p-6"
               >
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-8 shadow-xl">
-                  <Map size={16} className="text-amber-400" />
-                  <span className="text-xs font-bold uppercase tracking-widest text-white">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
                     {currentSlide.data.description}
                   </span>
                 </div>
-                <h2 className="text-5xl md:text-7xl font-black font-serif text-white mb-6 leading-none tracking-tighter drop-shadow-2xl">
+                <h2 className="text-4xl md:text-7xl font-black font-serif text-white mb-6 leading-tight tracking-tighter drop-shadow-2xl">
                   {currentSlide.data.title}
                 </h2>
+                <div className="flex items-center justify-center gap-2 text-stone-400">
+                  <Layers size={16} />
+                  <span className="text-xs font-bold uppercase tracking-widest">
+                    Section {currentSegmentIndex + 1}
+                  </span>
+                </div>
               </motion.div>
             </div>
           ) : (
@@ -261,14 +311,12 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
               className={`w-full h-full flex flex-col relative justify-center transition-colors duration-700
               ${
                 currentSlide.data.speaker === "Jehovah"
-                  ? "bg-linear-180 from-yellow-400 to-black"
-                  : currentSlide.data.speaker === "Narrator"
-                  ? "bg-linear-to-b from-stone-800 to-stone-950 border-t-8 border-amber-900/20"
+                  ? "bg-gradient-to-b from-yellow-500/80 to-black"
                   : "bg-stone-900"
               }
             `}
             >
-              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px]"></div>
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-[length:16px_16px]"></div>
               <div className="relative z-10 max-w-xl mx-auto w-full px-8">
                 <p
                   className={`font-serif leading-relaxed mb-6 ${
@@ -277,21 +325,11 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
                       : "text-2xl md:text-3xl text-stone-200"
                   }`}
                 >
-                  {currentSlide.data.text
-                    .split(/(\*\*.*?\*\*)/)
-                    .map((part, i) =>
-                      part.startsWith("**") ? (
-                        <span key={i} className="text-amber-400 font-bold">
-                          {part.slice(2, -2)}
-                        </span>
-                      ) : (
-                        part
-                      )
-                    )}
+                  {currentSlide.data.text}
                 </p>
               </div>
               <div className="absolute bottom-12 left-8 z-20">
-                <p className="font-bold uppercase tracking-widest text-amber-500">
+                <p className="font-bold uppercase tracking-widest text-amber-500/80 text-xs">
                   Isaiah {currentChapter}:{currentSlide.data.verse}
                 </p>
               </div>
@@ -303,18 +341,24 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
       {/* Finish Overlay */}
       {isLastSlide && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-xl z-60"
+          className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-2xl z-60"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="text-center">
-            <h2 className="text-3xl font-serif font-bold mb-6">
+          <div className="text-center p-8">
+            <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/50">
+              <ChevronLeft className="text-green-500 rotate-180" size={40} />
+            </div>
+            <h2 className="text-4xl font-serif font-bold mb-2">
               Chapter Complete
             </h2>
+            <p className="text-stone-400 mb-8 max-w-xs mx-auto">
+              You've finished reading the visions for Chapter {currentChapter}.
+            </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 bg-amber-500 text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+              className="inline-flex items-center gap-2 bg-white text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform"
             >
-              <ChevronLeft size={20} /> Back to Library
+              Library
             </Link>
           </div>
         </div>
