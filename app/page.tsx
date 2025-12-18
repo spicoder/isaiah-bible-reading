@@ -1,9 +1,19 @@
+// app/page.tsx
+"use client";
+
 import Link from "next/link";
-import { Sparkles, Play, Heart, Bookmark } from "lucide-react";
+import Image from "next/image";
+import { Sparkles, Play, Heart, Bookmark, CheckCircle2 } from "lucide-react";
 import { isaiahChapters } from "@/app/lib/data";
+import { useProgress } from "@/app/lib/hooks";
 
 export default function Home() {
   const chapters = Object.entries(isaiahChapters);
+  const { completedChapters, isLoaded } = useProgress();
+
+  // Find the first chapter ID that isn't completed to determine where to "Start Reading"
+  const nextChapterId =
+    chapters.find(([id]) => !completedChapters.includes(id))?.[0] || "1";
 
   return (
     <main className="min-h-screen bg-[#FDFBF7] pb-24">
@@ -28,12 +38,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero / Featured */}
+      {/* Hero Section */}
       <section className="px-4 mb-8">
         <div className="bg-stone-900 rounded-4xl p-8 text-white relative overflow-hidden min-h-[300px] flex flex-col justify-end shadow-2xl">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
-          <div className="absolute top-0 right-0 p-12 bg-amber-500 blur-[80px] rounded-full opacity-20"></div>
-
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full mb-4 border border-white/10">
               <Sparkles size={12} className="text-amber-400" />
@@ -49,10 +57,13 @@ export default function Home() {
               reimagined.
             </p>
             <Link
-              href="/isaiah/1"
+              href={`/isaiah/${nextChapterId}`}
               className="bg-white text-black px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs inline-flex items-center gap-2 hover:scale-105 transition-transform w-fit"
             >
-              <Play size={14} fill="currentColor" /> Start Reading
+              <Play size={14} fill="currentColor" />
+              {isLoaded && completedChapters.includes(nextChapterId)
+                ? "Continue Reading"
+                : "Start Reading"}
             </Link>
           </div>
         </div>
@@ -65,24 +76,39 @@ export default function Home() {
         </h3>
 
         <div className="grid grid-cols-2 gap-4">
-          {chapters.map(([id, chapter]) => (
-            <Link key={id} href={`/isaiah/${id}`} className="group">
-              <div className="aspect-3/4 bg-white rounded-3xl border-2 border-stone-100 p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-amber-400 hover:shadow-lg">
-                <div className="mt-auto">
-                  <h4 className="font-serif text-xl font-bold text-stone-800 leading-tight group-hover:text-amber-600 transition-colors">
-                    Chapter {chapter.chapter}
-                  </h4>
-                </div>
-              </div>
-            </Link>
-          ))}
+          {chapters.map(([id, chapter]) => {
+            const isDone = completedChapters.includes(id);
+            const thumbnail = chapter.visuals[0]?.imageSrc;
 
-          {/* Placeholder for Chapter 2 */}
-          <div className="aspect-3/4 bg-stone-50 rounded-3xl border-2 border-dashed border-stone-200 flex items-center justify-center">
-            <span className="text-stone-300 font-bold text-xs uppercase tracking-widest">
-              Coming Soon
-            </span>
-          </div>
+            return (
+              <Link key={id} href={`/isaiah/${id}`} className="group">
+                <div className="aspect-3/4 bg-linear-180 from-black/70 to-black rounded-3xl border-2 border-stone-100 relative overflow-hidden transition-all duration-300 hover:border-amber-400 hover:shadow-lg">
+                  {/* Upgrade: First Visual as Thumbnail */}
+                  {thumbnail && (
+                    <div className="absolute inset-0 z-0">
+                      <Image
+                        src={thumbnail}
+                        alt={`Chapter ${chapter.chapter}`}
+                        fill
+                        className="object-cover opacity-70 group-hover:opacity-60 transition-opacity"
+                      />
+                    </div>
+                  )}
+
+                  <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
+                    <div className="flex justify-end">
+                      {isDone && (
+                        <CheckCircle2 size={20} className="text-green-600" />
+                      )}
+                    </div>
+                    <h4 className="font-serif text-xl font-bold text-white leading-tight group-hover:text-amber-600 transition-colors">
+                      Chapter {chapter.chapter}
+                    </h4>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
     </main>

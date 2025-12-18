@@ -1,12 +1,12 @@
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, Suspense } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { ChevronLeft, X, Map, Heart, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ChapterData, Verse, VisualScene } from "@/app/lib/data";
-import { useFavorites } from "@/app/lib/hooks";
+import { useFavorites, useProgress } from "@/app/lib/hooks";
 
 // --- Types ---
 type StoryItem =
@@ -27,26 +27,37 @@ const getStoryItems = (chapter: ChapterData): StoryItem[] => {
   return items;
 };
 
-export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
+function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
   const currentChapter = chapter.chapter;
   const slides = getStoryItems(chapter);
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Upgrade: Initialize slide from URL parameter to support returning from Gems page
+  const searchParams = useSearchParams();
+  const initialSlide = parseInt(searchParams.get("slide") || "0");
+
+  const [currentIndex, setCurrentIndex] = useState(initialSlide);
   const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
   const router = useRouter();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { markAsCompleted } = useProgress();
 
   const currentSlide = slides[currentIndex];
   const isLastSlide = currentIndex === slides.length - 1;
+
+  // Upgrade: Mark chapter as completed when the user reaches the last slide
+  useEffect(() => {
+    if (isLastSlide) {
+      markAsCompleted(String(currentChapter));
+    }
+  }, [isLastSlide, currentChapter, markAsCompleted]);
 
   // --- Navigation ---
   const handleNext = useCallback(() => {
     if (currentIndex < slides.length - 1) {
       setDirection(1);
       setCurrentIndex((prev) => prev + 1);
-    } else {
-      // Optional: Redirect to home or next chapter when done
-      // router.push('/');
     }
   }, [currentIndex, slides.length]);
 
@@ -57,19 +68,17 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
     }
   }, [currentIndex]);
 
-  // Keyboard
+  // Keyboard support
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") handleNext();
       if (e.key === "ArrowLeft") handlePrev();
-      if (e.key === " ") setIsPaused((p) => !p); // Space to pause
+      if (e.key === " ") setIsPaused((p) => !p);
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleNext, handlePrev]);
 
-  // --- Variants ---
-  // We explicitly type this as 'Variants' to fix the easing type error
   const variants: Variants = {
     enter: (direction: number) => ({
       x: direction > 0 ? "100%" : "-100%",
@@ -89,7 +98,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
 
   return (
     <div className="fixed inset-0 bg-black text-white font-sans overflow-hidden">
-      {/* 1. PROGRESS BARS (Visualization of Timer) */}
+      {/* 1. PROGRESS BARS */}
       <div className="absolute top-2 left-2 right-2 z-50 flex gap-1 h-1">
         {slides.map((_, idx) => (
           <div
@@ -100,8 +109,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
               <motion.div
                 className="h-full bg-white"
                 initial={{ width: "0%" }}
-                animate={{ width: isPaused ? "0%" : "100%" }} // If paused, hold. If active, fill.
-                // KEY: This 10s duration is your timer.
+                animate={{ width: isPaused ? "0%" : "100%" }}
                 transition={{ duration: 10, ease: "linear" }}
                 onAnimationComplete={() => !isPaused && handleNext()}
               />
@@ -116,12 +124,11 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
         ))}
       </div>
 
-      {/* 2. HEADER (Top Left Speaker & Close) */}
+      {/* 2. HEADER */}
       <div className="absolute top-6 left-4 right-4 z-40 flex justify-between items-start">
-        {/* Speaker / Title Area */}
         <div className="flex items-center gap-3">
           {currentSlide.type === "verse" ? (
-            <div className="flex items-center gap-2 bg-white/20  backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
               <span className="font-bold text-sm tracking-wide">
                 {currentSlide.data.speaker}
               </span>
@@ -142,10 +149,9 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
         </Link>
       </div>
 
-      {/* 3. INTERACTIONS (Right Side) */}
+      {/* 3. INTERACTIONS */}
       {currentSlide.type === "verse" && (
         <div className="absolute right-4 bottom-10 z-50 flex flex-col gap-6 items-center">
-          {/* Heart */}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -168,16 +174,17 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
             <span className="text-[10px] font-bold">Save</span>
           </button>
 
-          {/* Reply / Gems */}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              // Navigate to Spiritual Gems with context
-              router.push(
-                `/spiritual-gems?ref=${encodeURIComponent(
-                  `Isaiah ${currentChapter}:${currentSlide.data.verse}`
-                )}`
+              // Upgrade: Send current slide index in returnUrl
+              const ref = encodeURIComponent(
+                `Isaiah ${currentChapter}:${currentSlide.data.verse}`
               );
+              const returnTo = encodeURIComponent(
+                `/isaiah/${currentChapter}?slide=${currentIndex}`
+              );
+              router.push(`/spiritual-gems?ref=${ref}&returnTo=${returnTo}`);
             }}
             className="flex flex-col items-center gap-1 group"
           >
@@ -189,7 +196,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
         </div>
       )}
 
-      {/* 4. TAP ZONES (Pause logic added) */}
+      {/* 4. TAP ZONES */}
       <div className="absolute inset-0 z-30 flex">
         <div
           className="w-[30%] h-full"
@@ -221,9 +228,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
           className="absolute inset-0 flex flex-col justify-center items-center px-6 md:px-0"
         >
           {currentSlide.type === "visual" ? (
-            // --- VISUAL SLIDE (UPDATED) ---
             <div className="w-full h-full flex flex-col items-center justify-center text-center relative">
-              {/* REAL BACKGROUND IMAGE */}
               <div className="absolute inset-0">
                 <Image
                   src={currentSlide.data.imageSrc}
@@ -232,10 +237,8 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                   className="object-cover opacity-60"
                   priority
                 />
-                {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-black/60"></div>
               </div>
-
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -248,37 +251,31 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                     {currentSlide.data.description}
                   </span>
                 </div>
-
                 <h2 className="text-5xl md:text-7xl font-black font-serif text-white mb-6 leading-none tracking-tighter drop-shadow-2xl">
                   {currentSlide.data.title}
                 </h2>
               </motion.div>
             </div>
           ) : (
-            // --- VERSE SLIDE ---
             <div
-              className={`w-full h-full flex flex-col relative justify-center
+              className={`w-full h-full flex flex-col relative justify-center transition-colors duration-700
               ${
                 currentSlide.data.speaker === "Jehovah"
-                  ? "bg-linear-220 from-yellow-400 to-black"
+                  ? "bg-linear-180 from-yellow-400 to-black"
+                  : currentSlide.data.speaker === "Narrator"
+                  ? "bg-linear-to-b from-stone-800 to-stone-950 border-t-8 border-amber-900/20"
                   : "bg-stone-900"
               }
             `}
             >
-              {/* Background Texture */}
               <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px]"></div>
-
               <div className="relative z-10 max-w-xl mx-auto w-full px-8">
-                {/* Text */}
                 <p
-                  className={`
-                  font-serif leading-relaxed mb-6
-                  ${
+                  className={`font-serif leading-relaxed mb-6 ${
                     currentSlide.data.speaker === "Jehovah"
                       ? "text-2xl md:text-4xl text-amber-50 drop-shadow-lg"
                       : "text-2xl md:text-3xl text-stone-200"
-                  }
-                `}
+                  }`}
                 >
                   {currentSlide.data.text
                     .split(/(\*\*.*?\*\*)/)
@@ -293,8 +290,6 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                     )}
                 </p>
               </div>
-
-              {/* Reference Text overlaying the huge number */}
               <div className="absolute bottom-12 left-8 z-20">
                 <p className="font-bold uppercase tracking-widest text-amber-500">
                   Isaiah {currentChapter}:{currentSlide.data.verse}
@@ -325,5 +320,13 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
         </div>
       )}
     </div>
+  );
+}
+
+export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
+  return (
+    <Suspense fallback={<div className="fixed inset-0 bg-black" />}>
+      <StoryViewerContent chapter={chapter} />
+    </Suspense>
   );
 }

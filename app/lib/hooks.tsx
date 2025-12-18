@@ -1,5 +1,5 @@
-'use client';
-import { useState, useEffect, useCallback } from 'react';
+"use client";
+import { useState, useEffect, useCallback } from "react";
 
 // --- FAVORITES HOOK ---
 export const useFavorites = () => {
@@ -7,8 +7,8 @@ export const useFavorites = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('isaiah-favorites');
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("isaiah-favorites");
       if (stored) {
         setFavorites(JSON.parse(stored));
       }
@@ -17,17 +17,20 @@ export const useFavorites = () => {
   }, []);
 
   const toggleFavorite = useCallback((id: string) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const newFavs = prev.includes(id)
-        ? prev.filter(f => f !== id)
+        ? prev.filter((f) => f !== id)
         : [...prev, id];
-      
-      localStorage.setItem('isaiah-favorites', JSON.stringify(newFavs));
+
+      localStorage.setItem("isaiah-favorites", JSON.stringify(newFavs));
       return newFavs;
     });
   }, []);
 
-  const isFavorite = useCallback((id: string) => favorites.includes(id), [favorites]);
+  const isFavorite = useCallback(
+    (id: string) => favorites.includes(id),
+    [favorites]
+  );
 
   return { favorites, toggleFavorite, isFavorite, isLoaded };
 };
@@ -38,8 +41,8 @@ export const useGems = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('isaiah-gems');
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("isaiah-gems");
       if (stored) {
         setGems(JSON.parse(stored));
       }
@@ -48,25 +51,55 @@ export const useGems = () => {
   }, []);
 
   const saveGem = useCallback((reference: string, content: string) => {
-    setGems(prev => {
+    setGems((prev) => {
       const newGems = { ...prev, [reference]: content };
-      localStorage.setItem('isaiah-gems', JSON.stringify(newGems));
+      localStorage.setItem("isaiah-gems", JSON.stringify(newGems));
       return newGems;
     });
   }, []);
 
   const deleteGem = useCallback((reference: string) => {
-    setGems(prev => {
+    setGems((prev) => {
       const newGems = { ...prev };
       delete newGems[reference];
-      localStorage.setItem('isaiah-gems', JSON.stringify(newGems));
+      localStorage.setItem("isaiah-gems", JSON.stringify(newGems));
       return newGems;
     });
   }, []);
 
-  const getGem = useCallback((reference: string) => {
-    return gems[reference] || '';
-  }, [gems]);
+  const getGem = useCallback(
+    (reference: string) => {
+      return gems[reference] || "";
+    },
+    [gems]
+  );
 
   return { saveGem, getGem, deleteGem, allGems: gems, isLoaded };
+};
+
+// --- PROGRESS HOOK ---
+export const useProgress = () => {
+  const [completedChapters, setCompletedChapters] = useState<string[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("isaiah-progress");
+      if (stored) {
+        setCompletedChapters(JSON.parse(stored));
+      }
+      setIsLoaded(true);
+    }
+  }, []);
+
+  const markAsCompleted = useCallback((chapterId: string) => {
+    setCompletedChapters((prev) => {
+      if (prev.includes(chapterId)) return prev;
+      const newProgress = [...prev, chapterId];
+      localStorage.setItem("isaiah-progress", JSON.stringify(newProgress));
+      return newProgress;
+    });
+  }, []);
+
+  return { completedChapters, markAsCompleted, isLoaded };
 };
