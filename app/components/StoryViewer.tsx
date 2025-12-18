@@ -1,14 +1,7 @@
 "use client";
 import { useState, useCallback, useEffect, Suspense, useMemo } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import {
-  ChevronLeft,
-  X,
-  Map,
-  Heart,
-  MessageCircle,
-  Layers,
-} from "lucide-react";
+import { X, Map, Heart, MessageCircle, Layers } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -19,6 +12,11 @@ import { useFavorites, useProgress } from "@/app/lib/hooks";
 type StoryItem =
   | { type: "visual"; data: VisualScene; id: string; segmentIndex: number }
   | { type: "verse"; data: Verse; id: string; segmentIndex: number };
+
+interface StoryViewerProps {
+  chapter: ChapterData;
+  nextChapterId: string | null; // Add this prop
+}
 
 const getStoryItems = (chapter: ChapterData): StoryItem[] => {
   const items: StoryItem[] = [];
@@ -54,7 +52,13 @@ const getStoryItems = (chapter: ChapterData): StoryItem[] => {
   return items;
 };
 
-function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
+function StoryViewerContent({
+  chapter,
+  nextChapterId,
+}: {
+  chapter: ChapterData;
+  nextChapterId: string | null;
+}) {
   const currentChapter = chapter.chapter;
   const slides = useMemo(() => getStoryItems(chapter), [chapter]);
   const totalSegments = chapter.visuals.length;
@@ -228,10 +232,10 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
             onClick={(e) => {
               e.stopPropagation();
               const ref = encodeURIComponent(
-                `Isaiah ${currentChapter}:${currentSlide.data.verse}`
+                `Isaias ${currentChapter}:${currentSlide.data.verse}`
               );
               const returnTo = encodeURIComponent(
-                `/isaiah/${currentChapter}?slide=${currentIndex}`
+                `/Isaias/${currentChapter}?slide=${currentIndex}`
               );
               router.push(`/spiritual-gems?ref=${ref}&returnTo=${returnTo}`);
             }}
@@ -310,7 +314,7 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
             <div
               className={`w-full h-full flex flex-col relative justify-center transition-colors duration-700
               ${
-                currentSlide.data.speaker === "Jehovah"
+                currentSlide.data.speaker === "Jehova"
                   ? "bg-gradient-to-b from-yellow-500/80 to-black"
                   : "bg-stone-900"
               }
@@ -320,7 +324,7 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
               <div className="relative z-10 max-w-xl mx-auto w-full px-8">
                 <p
                   className={`font-serif leading-relaxed mb-6 ${
-                    currentSlide.data.speaker === "Jehovah"
+                    currentSlide.data.speaker === "Jehova"
                       ? "text-2xl md:text-4xl text-amber-50 drop-shadow-lg"
                       : "text-2xl md:text-3xl text-stone-200"
                   }`}
@@ -330,7 +334,7 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
               </div>
               <div className="absolute bottom-12 left-8 z-20">
                 <p className="font-bold uppercase tracking-widest text-amber-500/80 text-xs">
-                  Isaiah {currentChapter}:{currentSlide.data.verse}
+                  Isaias {currentChapter}:{currentSlide.data.verse}
                 </p>
               </div>
             </div>
@@ -341,25 +345,35 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
       {/* Finish Overlay */}
       {isLastSlide && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-2xl z-60"
+          className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-2xl z-50"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="text-center p-8">
-            <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/50">
-              <ChevronLeft className="text-green-500 rotate-180" size={40} />
-            </div>
             <h2 className="text-4xl font-serif font-bold mb-2">
               Chapter Complete
             </h2>
             <p className="text-stone-400 mb-8 max-w-xs mx-auto">
               You've finished reading the visions for Chapter {currentChapter}.
             </p>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 bg-white text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform"
-            >
-              Library
-            </Link>
+
+            <div className="flex flex-col gap-4 items-center">
+              {/* Show Next Chapter button if it exists */}
+              {nextChapterId && (
+                <Link
+                  href={`/isaiah/${nextChapterId}`}
+                  className="inline-flex items-center gap-2 bg-amber-500 text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+                >
+                  Next Chapter
+                </Link>
+              )}
+
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 bg-white/10 text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-white/20 transition-colors"
+              >
+                Library
+              </Link>
+            </div>
           </div>
         </div>
       )}
@@ -367,10 +381,16 @@ function StoryViewerContent({ chapter }: { chapter: ChapterData }) {
   );
 }
 
-export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
+export default function StoryViewer({
+  chapter,
+  nextChapterId,
+}: {
+  chapter: ChapterData;
+  nextChapterId: string | null;
+}) {
   return (
     <Suspense fallback={<div className="fixed inset-0 bg-black" />}>
-      <StoryViewerContent chapter={chapter} />
+      <StoryViewerContent chapter={chapter} nextChapterId={nextChapterId} />
     </Suspense>
   );
 }
