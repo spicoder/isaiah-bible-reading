@@ -1,5 +1,3 @@
-import React from "react";
-
 // --- TYPES ---
 export type Verse = {
   verse: number;

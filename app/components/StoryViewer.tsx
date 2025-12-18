@@ -1,14 +1,7 @@
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion"; // <--- Added 'Variants'
-import {
-  ChevronLeft,
-  X,
-  Sparkles,
-  Map,
-  Heart,
-  MessageCircle,
-} from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
+import { ChevronLeft, X, Map, Heart, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -35,6 +28,7 @@ const getStoryItems = (chapter: ChapterData): StoryItem[] => {
 };
 
 export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
+  const currentChapter = chapter.chapter;
   const slides = getStoryItems(chapter);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -127,12 +121,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
         {/* Speaker / Title Area */}
         <div className="flex items-center gap-3">
           {currentSlide.type === "verse" ? (
-            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
-              {currentSlide.data.speaker === "Jehovah" ? (
-                <Sparkles size={14} className="text-amber-400" />
-              ) : (
-                <div className="w-4 h-4 rounded-full bg-stone-400" />
-              )}
+            <div className="flex items-center gap-2 bg-white/20  backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
               <span className="font-bold text-sm tracking-wide">
                 {currentSlide.data.speaker}
               </span>
@@ -140,9 +129,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
           ) : (
             <div className="flex items-center gap-2 bg-amber-500/90 text-black px-3 py-1.5 rounded-full">
               <Map size={14} />
-              <span className="font-bold text-sm tracking-wide">
-                Visual Scene
-              </span>
+              <span className="font-bold text-sm tracking-wide">Outline</span>
             </div>
           )}
         </div>
@@ -157,7 +144,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
 
       {/* 3. INTERACTIONS (Right Side) */}
       {currentSlide.type === "verse" && (
-        <div className="absolute right-4 bottom-32 z-50 flex flex-col gap-6 items-center">
+        <div className="absolute right-4 bottom-10 z-50 flex flex-col gap-6 items-center">
           {/* Heart */}
           <button
             onClick={(e) => {
@@ -188,7 +175,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
               // Navigate to Spiritual Gems with context
               router.push(
                 `/spiritual-gems?ref=${encodeURIComponent(
-                  `Isaiah 1:${currentSlide.data.verse}`
+                  `Isaiah ${currentChapter}:${currentSlide.data.verse}`
                 )}`
               );
             }}
@@ -246,7 +233,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                   priority
                 />
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-black/60"></div>
               </div>
 
               <motion.div
@@ -258,17 +245,13 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-8 shadow-xl">
                   <Map size={16} className="text-amber-400" />
                   <span className="text-xs font-bold uppercase tracking-widest text-white">
-                    Visual Context
+                    {currentSlide.data.description}
                   </span>
                 </div>
 
                 <h2 className="text-5xl md:text-7xl font-black font-serif text-white mb-6 leading-none tracking-tighter drop-shadow-2xl">
                   {currentSlide.data.title}
                 </h2>
-
-                <p className="text-amber-300 font-mono text-xs uppercase tracking-[0.2em] font-bold drop-shadow-md">
-                  {currentSlide.data.description}
-                </p>
               </motion.div>
             </div>
           ) : (
@@ -277,13 +260,13 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
               className={`w-full h-full flex flex-col relative justify-center
               ${
                 currentSlide.data.speaker === "Jehovah"
-                  ? "bg-gradient-to-b from-amber-950 to-black"
+                  ? "bg-linear-220 from-yellow-400 to-black"
                   : "bg-stone-900"
               }
             `}
             >
               {/* Background Texture */}
-              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px]"></div>
 
               <div className="relative z-10 max-w-xl mx-auto w-full px-8">
                 {/* Text */}
@@ -292,7 +275,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                   font-serif leading-relaxed mb-6
                   ${
                     currentSlide.data.speaker === "Jehovah"
-                      ? "text-3xl md:text-4xl text-amber-50 drop-shadow-lg"
+                      ? "text-2xl md:text-4xl text-amber-50 drop-shadow-lg"
                       : "text-2xl md:text-3xl text-stone-200"
                   }
                 `}
@@ -311,17 +294,10 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
                 </p>
               </div>
 
-              {/* Huge Verse Number (Bottom Left) */}
-              <div className="absolute bottom-8 left-6 z-10">
-                <span className="text-[8rem] md:text-[10rem] font-black leading-none text-white/5 font-sans select-none">
-                  {currentSlide.data.verse}
-                </span>
-              </div>
-
               {/* Reference Text overlaying the huge number */}
               <div className="absolute bottom-12 left-8 z-20">
-                <p className="text-sm font-bold uppercase tracking-widest text-amber-500">
-                  Isaiah 1
+                <p className="font-bold uppercase tracking-widest text-amber-500">
+                  Isaiah {currentChapter}:{currentSlide.data.verse}
                 </p>
               </div>
             </div>
@@ -332,7 +308,7 @@ export default function StoryViewer({ chapter }: { chapter: ChapterData }) {
       {/* Finish Overlay */}
       {isLastSlide && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-xl z-[60]"
+          className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-xl z-60"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="text-center">
