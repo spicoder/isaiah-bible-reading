@@ -2063,17 +2063,22 @@ export const bookOfJeremiah = {
     verses: [
       {
         verse: 1,
+        speaker: "Jeremias",
+        text: "Ito ang sinabi ni Jehova sa akin: ",
+      },
+      {
+        verse: 1,
         speaker: "Jehova",
-        text: "Ito ang sinabi ni Jehova sa akin: “Bumili ka ng sinturong lino at isuot mo iyon, pero huwag mong ilubog iyon sa tubig.”",
+        text: "“Bumili ka ng sinturong lino at isuot mo iyon, pero huwag mong ilubog iyon sa tubig.”",
       },
       {
         verse: 2,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Kaya bumili ako ng sinturon gaya ng sinabi ni Jehova at isinuot ko iyon.",
       },
       {
         verse: 3,
-        speaker: "Jehova",
+        speaker: "Jeremias",
         text: "At dumating sa akin ang salita ni Jehova sa ikalawang pagkakataon:",
       },
       {
@@ -2083,28 +2088,39 @@ export const bookOfJeremiah = {
       },
       {
         verse: 5,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Kaya pumunta ako roon at itinago ko iyon sa may Eufrates, gaya ng iniutos ni Jehova sa akin.",
       },
       {
         verse: 6,
-        speaker: "Jehova",
+        speaker: "Jeremias",
         text: "Pero pagkalipas ng maraming araw, sinabi sa akin ni Jehova: “Pumunta ka sa Eufrates at kunin mo ang sinturon na iniutos kong itago mo roon.”",
       },
       {
+        verse: 6,
+        speaker: "Jeremias",
+        text: "“Pumunta ka sa Eufrates at kunin mo ang sinturon na iniutos kong itago mo roon.”",
+      },
+
+      {
         verse: 7,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Kaya pumunta ako sa Eufrates at hinukay ko ang sinturon at kinuha ito sa pinagtaguan ko, at nakita kong ang sinturon ay sira na; hindi na iyon mapapakinabangan.",
       },
       {
         verse: 8,
-        speaker: "Jehova",
+        speaker: "Jeremias",
         text: "Pagkatapos ay dumating sa akin ang salita ni Jehova:",
       },
       {
         verse: 9,
-        speaker: "Jehova",
+        speaker: "Jeremias",
         text: "“Ito ang sinabi ni Jehova, ‘Ganiyan ko wawakasan ang pagmamalaki ng Juda at ang labis na kahambugan ng Jerusalem.",
+      },
+      {
+        verse: 9,
+        speaker: "Jehova",
+        text: "‘Ganiyan ko wawakasan ang pagmamalaki ng Juda at ang labis na kahambugan ng Jerusalem.",
       },
       {
         verse: 10,
@@ -2118,8 +2134,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 12,
-        speaker: "Bayan ng Diyos",
+        speaker: "Jehova",
         text: "“At sabihin mo rin sa kanila ang mensaheng ito, ‘Ito ang sinabi ni Jehova na Diyos ng Israel: “Ang bawat malaking banga ay dapat punuin ng alak.”’ At sasabihin nila sa iyo, ‘Hindi ba alam na namin na ang bawat malaking banga ay dapat punuin ng alak?’",
+      },
+      {
+        verse: 12,
+        speaker: "Bayan ng Diyos",
+        text: "‘Hindi ba alam na namin na ang bawat malaking banga ay dapat punuin ng alak?’",
       },
       {
         verse: 13,
@@ -2270,8 +2291,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 11,
-        speaker: "Jehova",
+        speaker: "Jeremias",
         text: "At sinabi ni Jehova sa akin: “Huwag kang mananalangin na mapabuti ang bayang ito.",
+      },
+      {
+        verse: 11,
+        speaker: "Jehova",
+        text: "“Huwag kang mananalangin na mapabuti ang bayang ito.",
       },
       {
         verse: 12,
@@ -2285,8 +2311,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 14,
+        speaker: "Jeremias",
+        text: "Pagkatapos ay sinabi ni Jehova sa akin: ",
+      },
+      {
+        verse: 14,
         speaker: "Jehova",
-        text: "Pagkatapos ay sinabi ni Jehova sa akin: “Ang mga propeta ay humuhula ng mga kasinungalingan sa pangalan ko. Hindi ko sila isinugo o inutusan o kinausap. Sinungaling na pangitain at walang-saysay na panghuhula at panlilinlang ng sarili nilang puso ang sinasabi nila sa inyo.",
+        text: "“Ang mga propeta ay humuhula ng mga kasinungalingan sa pangalan ko. Hindi ko sila isinugo o inutusan o kinausap. Sinungaling na pangitain at walang-saysay na panghuhula at panlilinlang ng sarili nilang puso ang sinasabi nila sa inyo.",
       },
       {
         verse: 15,
@@ -2367,8 +2398,13 @@ export const bookOfJeremiah = {
     verses: [
       {
         verse: 1,
+        speaker: "Jeremias",
+        text: "At sinabi ni Jehova sa akin: ",
+      },
+      {
+        verse: 1,
         speaker: "Jehova",
-        text: "At sinabi ni Jehova sa akin: “Kahit pa nakatayo sina Moises at Samuel sa harap ko, hindi ako maaawa sa bayang ito. Palalayasin ko sila sa harap ko. Hayaan mo silang umalis.",
+        text: "“Kahit pa nakatayo sina Moises at Samuel sa harap ko, hindi ako maaawa sa bayang ito. Palalayasin ko sila sa harap ko. Hayaan mo silang umalis.",
       },
       {
         verse: 2,
