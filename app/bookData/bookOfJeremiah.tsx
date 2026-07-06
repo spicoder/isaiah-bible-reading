@@ -2115,7 +2115,7 @@ export const bookOfJeremiah = {
       {
         verse: 9,
         speaker: "Jeremias",
-        text: "“Ito ang sinabi ni Jehova, ‘Ganiyan ko wawakasan ang pagmamalaki ng Juda at ang labis na kahambugan ng Jerusalem.",
+        text: "“Ito ang sinabi ni Jehova, ",
       },
       {
         verse: 9,
@@ -2135,7 +2135,7 @@ export const bookOfJeremiah = {
       {
         verse: 12,
         speaker: "Jehova",
-        text: "“At sabihin mo rin sa kanila ang mensaheng ito, ‘Ito ang sinabi ni Jehova na Diyos ng Israel: “Ang bawat malaking banga ay dapat punuin ng alak.”’ At sasabihin nila sa iyo, ‘Hindi ba alam na namin na ang bawat malaking banga ay dapat punuin ng alak?’",
+        text: "“At sabihin mo rin sa kanila ang mensaheng ito, ‘Ito ang sinabi ni Jehova na Diyos ng Israel: “Ang bawat malaking banga ay dapat punuin ng alak.”’ At sasabihin nila sa iyo, ’",
       },
       {
         verse: 12,
