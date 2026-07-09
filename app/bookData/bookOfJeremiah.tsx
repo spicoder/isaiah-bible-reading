@@ -2094,11 +2094,11 @@ export const bookOfJeremiah = {
       {
         verse: 6,
         speaker: "Jeremias",
-        text: "Pero pagkalipas ng maraming araw, sinabi sa akin ni Jehova: “Pumunta ka sa Eufrates at kunin mo ang sinturon na iniutos kong itago mo roon.”",
+        text: "Pero pagkalipas ng maraming araw, sinabi sa akin ni Jehova: ",
       },
       {
         verse: 6,
-        speaker: "Jeremias",
+        speaker: "Jehova",
         text: "“Pumunta ka sa Eufrates at kunin mo ang sinturon na iniutos kong itago mo roon.”",
       },
 
@@ -2114,13 +2114,8 @@ export const bookOfJeremiah = {
       },
       {
         verse: 9,
-        speaker: "Jeremias",
-        text: "“Ito ang sinabi ni Jehova, ",
-      },
-      {
-        verse: 9,
         speaker: "Jehova",
-        text: "‘Ganiyan ko wawakasan ang pagmamalaki ng Juda at ang labis na kahambugan ng Jerusalem.",
+        text: "“Ito ang sinabi ni Jehova, ‘Ganiyan ko wawakasan ang pagmamalaki ng Juda at ang labis na kahambugan ng Jerusalem.",
       },
       {
         verse: 10,
@@ -2292,7 +2287,7 @@ export const bookOfJeremiah = {
       {
         verse: 11,
         speaker: "Jeremias",
-        text: "At sinabi ni Jehova sa akin: “Huwag kang mananalangin na mapabuti ang bayang ito.",
+        text: "At sinabi ni Jehova sa akin: ",
       },
       {
         verse: 11,
@@ -2341,22 +2336,22 @@ export const bookOfJeremiah = {
       },
       {
         verse: 19,
-        speaker: "Bayan ng Diyos",
+        speaker: "Jeremias",
         text: "Lubusan mo na bang itinakwil ang Juda o kinamuhian ang Sion? Bakit mo kami sinaktan at wala na kami ngayong pag-asang gumaling? Naghintay kami ng kapayapaan, pero walang dumating na mabuti, Ng panahon ng pagpapagaling, pero takot ang nararamdaman namin!",
       },
       {
         verse: 20,
-        speaker: "Bayan ng Diyos",
+        speaker: "Jeremias",
         text: "O Jehova, inaamin namin ang kasamaan namin At ang pagkakamali ng mga ninuno namin, Dahil nagkasala kami laban sa iyo.",
       },
       {
         verse: 21,
-        speaker: "Bayan ng Diyos",
+        speaker: "Jeremias",
         text: "Alang-alang sa pangalan mo, huwag mo kaming itakwil; Huwag mong hamakin ang maluwalhati mong trono. Alalahanin mo ang tipan mo sa amin, at huwag mo itong sirain.",
       },
       {
         verse: 22,
-        speaker: "Bayan ng Diyos",
+        speaker: "Jeremias",
         text: "Mayroon bang sinuman sa walang-silbing mga idolo ng mga bansa na makapagpapaulan, O may sarili bang kakayahan ang langit na magbuhos ng ulan? Hindi ba ikaw lang, O Jehova na aming Diyos, ang makagagawa nito? At umaasa kami sa iyo, Dahil ikaw lang ang gumagawa ng lahat ng ito.",
       },
     ],
