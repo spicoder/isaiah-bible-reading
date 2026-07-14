@@ -2565,8 +2565,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 10,
+        speaker: "Jehova",
+        text: "“Kapag sinabi mo sa bayang ito ang lahat ng ito, tatanungin ka nila, ",
+      },
+      {
+        verse: 10,
         speaker: "Bayan ng Diyos",
-        text: "“Kapag sinabi mo sa bayang ito ang lahat ng ito, tatanungin ka nila, ‘Bakit sinabi ni Jehova na mangyayari sa amin ang lahat ng kapahamakang ito? Ano bang pagkakamali at kasalanan ang nagawa namin kay Jehova na aming Diyos?’",
+        text: "‘Bakit sinabi ni Jehova na mangyayari sa amin ang lahat ng kapahamakang ito? Ano bang pagkakamali at kasalanan ang nagawa namin kay Jehova na aming Diyos?’",
       },
       {
         verse: 11,
@@ -2732,7 +2737,7 @@ export const bookOfJeremiah = {
       },
       {
         verse: 15,
-        speaker: "Mga Tao",
+        speaker: "Jeremias",
         text: "May mga nagsasabi sa akin: “Nasaan ang salita ni Jehova? Mangyari nawa iyon!”",
       },
       {
