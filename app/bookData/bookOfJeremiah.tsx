@@ -2834,17 +2834,17 @@ export const bookOfJeremiah = {
       },
       {
         verse: 3,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Kaya pumunta ako sa bahay ng magpapalayok. May ginagawa siya sa paikutan ng luwad.",
       },
       {
         verse: 4,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Pero nasira ang sisidlang luwad habang ginagawa ito ng magpapalayok. Kaya ang luwad ay ginawa niyang ibang sisidlan, ayon sa naiisip niyang nararapat gawin.",
       },
       {
         verse: 5,
-        speaker: "Jehova",
+        speaker: "Jeremias",
         text: "Pagkatapos, dumating sa akin ang salita ni Jehova:",
       },
       {
@@ -2879,8 +2879,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 12,
+        speaker: "Jeremias",
+        text: "Pero sinabi nila: ",
+      },
+      {
+        verse: 12,
         speaker: "Bayan ng Diyos",
-        text: "Pero sinabi nila: “Hindi! Susundin namin kung ano ang naiisip namin, at gagawin namin ang gusto ng mapagmatigas at masama naming puso.”",
+        text: "“Hindi! Susundin namin kung ano ang naiisip namin, at gagawin namin ang gusto ng mapagmatigas at masama naming puso.”",
       },
       {
         verse: 13,
@@ -2909,8 +2914,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 18,
+        speaker: "Jeremias",
+        text: "At sinabi nila: ",
+      },
+      {
+        verse: 18,
         speaker: "Mga Tao",
-        text: "At sinabi nila: “Halikayo, magpakana tayo laban kay Jeremias, dahil hindi mawawala ang kautusan mula sa mga saserdote natin, o ang payo mula sa marurunong, o ang salita mula sa mga propeta. Halikayo, magsalita tayo ng masama sa kaniya at huwag nating pakinggan ang sinasabi niya.”",
+        text: "“Halikayo, magpakana tayo laban kay Jeremias, dahil hindi mawawala ang kautusan mula sa mga saserdote natin, o ang payo mula sa marurunong, o ang salita mula sa mga propeta. Halikayo, magsalita tayo ng masama sa kaniya at huwag nating pakinggan ang sinasabi niya.”",
       },
       {
         verse: 19,
@@ -3026,8 +3036,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 15,
+        speaker: "Jeremias",
+        text: "“Ito ang sinabi ni Jehova ng mga hukbo, ang Diyos ng Israel, ",
+      },
+      {
+        verse: 15,
         speaker: "Jehova",
-        text: "“Ito ang sinabi ni Jehova ng mga hukbo, ang Diyos ng Israel, ‘Pasasapitin ko sa lunsod na ito at sa lahat ng bayan nito ang lahat ng kapahamakang sinabi ko laban dito, dahil nagmatigas sila at hindi sumunod sa mga salita ko.’”",
+        text: "‘Pasasapitin ko sa lunsod na ito at sa lahat ng bayan nito ang lahat ng kapahamakang sinabi ko laban dito, dahil nagmatigas sila at hindi sumunod sa mga salita ko.’”",
       },
     ],
   },
