@@ -3292,8 +3292,13 @@ export const bookOfJeremiah = {
     verses: [
       {
         verse: 1,
-        speaker: "Narrator",
-        text: "Ito ang sinabi ni Jehova: “Pumunta ka sa bahay ng hari ng Juda, at dalhin mo ang mensaheng ito.",
+        speaker: "Jeremias",
+        text: "Ito ang sinabi ni Jehova: ",
+      },
+      {
+        verse: 1,
+        speaker: "Jehova",
+        text: "“Pumunta ka sa bahay ng hari ng Juda, at dalhin mo ang mensaheng ito.",
       },
       {
         verse: 2,
@@ -3342,9 +3347,15 @@ export const bookOfJeremiah = {
       },
       {
         verse: 11,
-        speaker: "Jehova",
-        text: "“Dahil ito ang sinabi ni Jehova tungkol sa anak ni Josias na si Salum, ang hari ng Juda na namamahala kahalili ng ama niyang si Josias at wala na sa lugar na ito: ‘Hindi na siya babalik pa roon.",
+        speaker: "Jeremias",
+        text: "“Dahil ito ang sinabi ni Jehova tungkol sa anak ni Josias na si Salum, ang hari ng Juda na namamahala kahalili ng ama niyang si Josias at wala na sa lugar na ito: ",
       },
+      {
+        verse: 11,
+        speaker: "Jehova",
+        text: "‘Hindi na siya babalik pa roon.",
+      },
+
       {
         verse: 12,
         speaker: "Jehova",
@@ -3387,22 +3398,22 @@ export const bookOfJeremiah = {
       },
       {
         verse: 20,
-        speaker: "Jeremias",
+        speaker: "Jehova",
         text: "Umakyat ka sa Lebanon at sumigaw, Ilakas mo ang tinig mo sa Basan, At sumigaw ka mula sa Abarim, Dahil ang lahat ng kalaguyo mo ay nilipol.",
       },
       {
         verse: 21,
-        speaker: "Jeremias",
+        speaker: "Jehova",
         text: "Kinausap kita noong tiwasay ka. Pero sinabi mo, ‘Hindi ako susunod.’ Ganiyan ka na mula pa noong kabataan ka; Hindi ka nakikinig sa tinig ko.",
       },
       {
         verse: 22,
-        speaker: "Jeremias",
+        speaker: "Jehova",
         text: "Isang hangin ang magpapastol sa lahat ng pastol mo, At ang mga kalaguyo mo ay mabibihag. Pagkatapos ay mapapahiya ka at mawawalan ng dangal dahil sa lahat ng iyong kapahamakan.",
       },
       {
         verse: 23,
-        speaker: "Jeremias",
+        speaker: "Jehova",
         text: "O ikaw na nakatira sa Lebanon, Na namumugad sa mga sedro, Daraing ka nang husto kapag dumating sa iyo ang paghihirap, Na gaya ng kirot na nararamdaman ng babaeng nanganganak!”",
       },
       {
