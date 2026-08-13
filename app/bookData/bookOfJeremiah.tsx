@@ -3692,22 +3692,32 @@ export const bookOfJeremiah = {
     verses: [
       {
         verse: 1,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Pagkatapos, may ipinakita sa akin si Jehova na dalawang basket ng igos na nasa harap ng templo ni Jehova, matapos ipatapon ni Haring Nabucodonosor ng Babilonya ang anak ni Jehoiakim na si Jeconias, na hari ng Juda, kasama ang matataas na opisyal ng Juda, ang mga bihasang manggagawa, at ang mga panday; dinala niya sila mula sa Jerusalem papuntang Babilonya.",
       },
       {
         verse: 2,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Napakaganda ng mga igos sa unang basket, gaya ng mga unang bunga. Pero ang mga igos sa isa pang basket ay napakapangit at hindi makakain.",
       },
       {
         verse: 3,
+        speaker: "Jeremias",
+        text: "At tinanong ako ni Jehova: ",
+      },
+      {
+        verse: 3,
         speaker: "Jehova",
-        text: "At tinanong ako ni Jehova: “Ano ang nakikita mo, Jeremias?” Kaya sinabi ko: “Mga igos; ang magagandang igos ay napakaganda, pero ang pangit na mga igos ay napakapangit at hindi makakain.”",
+        text: "“Ano ang nakikita mo, Jeremias?”",
+      },
+      {
+        verse: 3,
+        speaker: "Jeremias",
+        text: "Kaya sinabi ko: “Mga igos; ang magagandang igos ay napakaganda, pero ang pangit na mga igos ay napakapangit at hindi makakain.”",
       },
       {
         verse: 4,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Pagkatapos ay dumating sa akin ang salita ni Jehova:",
       },
       {
@@ -3815,7 +3825,12 @@ export const bookOfJeremiah = {
       {
         verse: 9,
         speaker: "Jehova",
-        text: "tatawagin ko ang lahat ng pamilya sa hilaga,” ang sabi ni Jehova, “tatawagin ko si Haring Nabucodonosor ng Babilonya, na lingkod ko, at isusugo ko sila laban sa lupaing ito at laban sa mga nakatira dito at laban sa lahat ng bansang ito sa palibot. Pupuksain ko sila at gagawing nakapangingilabot at isang bagay na sisipulan, at magiging wasak ang mga ito magpakailanman.",
+        text: "tatawagin ko ang lahat ng pamilya sa hilaga,” ang sabi ni Jehova, “tatawagin ko si Haring Nabucodonosor ng Babilonya, na lingkod ko, at isusugo ko sila laban sa lupaing ito at laban sa mga nakatira dito at laban sa lahat ng bansang ito sa palibot.",
+      },
+      {
+        verse: 9,
+        speaker: "Jehova",
+        text: "Pupuksain ko sila at gagawing nakapangingilabot at isang bagay na sisipulan, at magiging wasak ang mga ito magpakailanman.",
       },
       {
         verse: 10,
@@ -3905,7 +3920,12 @@ export const bookOfJeremiah = {
       {
         verse: 27,
         speaker: "Jehova",
-        text: "“At sabihin mo sa kanila, ‘Ito ang sinabi ni Jehova ng mga hukbo, ang Diyos ng Israel: “Uminom kayo at magpakalasing at sumuka at mabuwal hanggang sa hindi na makabangon, dahil sa espadang isusugo ko sa inyo.”’",
+        text: "“At sabihin mo sa kanila, ",
+      },
+      {
+        verse: 27,
+        speaker: "Jeremias",
+        text: "‘Ito ang sinabi ni Jehova ng mga hukbo, ang Diyos ng Israel: “Uminom kayo at magpakalasing at sumuka at mabuwal hanggang sa hindi na makabangon, dahil sa espadang isusugo ko sa inyo.”’",
       },
       {
         verse: 28,
@@ -3917,14 +3937,20 @@ export const bookOfJeremiah = {
         speaker: "Jehova",
         text: "Kung ang lunsod na tinatawag sa pangalan ko ay pinarusahan ko, kayo ba ay hindi mapaparusahan?”’ “‘Hindi kayo makaliligtas sa parusa, dahil magsusugo ako ng isang espada laban sa lahat ng nakatira sa lupa,’ ang sabi ni Jehova ng mga hukbo.",
       },
+
       {
         verse: 30,
         speaker: "Jehova",
-        text: "“At ihula mo sa kanila ang lahat ng salitang ito, at sabihin mo sa kanila, ‘Mula sa kaitaasan ay uungal si Jehova, At mula sa kaniyang banal na tirahan ay iparirinig niya ang kaniyang tinig. Uungal siya nang malakas laban sa kaniyang tahanan. Sisigaw siya na gaya ng mga tumatapak sa pisaan ng ubas At aawit ng awit ng tagumpay laban sa lahat ng nakatira sa lupa.’",
+        text: "“At ihula mo sa kanila ang lahat ng salitang ito, at sabihin mo sa kanila, ",
+      },
+      {
+        verse: 30,
+        speaker: "Jeremias",
+        text: "‘Mula sa kaitaasan ay uungal si Jehova, At mula sa kaniyang banal na tirahan ay iparirinig niya ang kaniyang tinig. Uungal siya nang malakas laban sa kaniyang tahanan. Sisigaw siya na gaya ng mga tumatapak sa pisaan ng ubas At aawit ng awit ng tagumpay laban sa lahat ng nakatira sa lupa.’",
       },
       {
         verse: 31,
-        speaker: "Jehova",
+        speaker: "Jeremias",
         text: "‘Isang ingay ang makakarating sa mga dulo ng lupa, Dahil si Jehova ay may usapin sa mga bansa. Siya mismo ang hahatol sa lahat ng tao. At ang masasama ay ibibigay niya sa espada,’ ang sabi ni Jehova.",
       },
       {
