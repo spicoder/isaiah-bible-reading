@@ -4017,7 +4017,7 @@ export const bookOfJeremiah = {
     verses: [
       {
         verse: 1,
-        speaker: "Narrator",
+        speaker: "Jeremias",
         text: "Sa pasimula ng pamamahala ng hari ng Juda na si Jehoiakim na anak ni Josias, ang salitang ito ay dumating mula kay Jehova:",
       },
       {
@@ -4052,13 +4052,23 @@ export const bookOfJeremiah = {
       },
       {
         verse: 8,
+        speaker: "Narrator",
+        text: "Kaya pagkatapos sabihin ni Jeremias ang lahat ng iniutos sa kaniya ni Jehova na sabihin sa buong bayan, sinunggaban siya ng mga saserdote at ng mga propeta at ng buong bayan at sinabi nila: ",
+      },
+      {
+        verse: 8,
         speaker: "Mga Saserdote at mga Propeta",
-        text: "Kaya pagkatapos sabihin ni Jeremias ang lahat ng iniutos sa kaniya ni Jehova na sabihin sa buong bayan, sinunggaban siya ng mga saserdote at ng mga propeta at ng buong bayan at sinabi nila: “Mamamatay ka!",
+        text: "“Mamamatay ka!",
       },
       {
         verse: 9,
         speaker: "Mga Saserdote at mga Propeta",
-        text: "Bakit ka nanghuhula sa pangalan ni Jehova at nagsasabi, ‘Magiging gaya ng Shilo ang bahay na ito, at mawawasak ang lunsod na ito at walang sinumang matitira dito’?” At ang buong bayan ay nagtipon-tipon sa palibot ni Jeremias sa bahay ni Jehova.",
+        text: "Bakit ka nanghuhula sa pangalan ni Jehova at nagsasabi, ‘Magiging gaya ng Shilo ang bahay na ito, at mawawasak ang lunsod na ito at walang sinumang matitira dito’?”",
+      },
+      {
+        verse: 9,
+        speaker: "Narrator",
+        text: "At ang buong bayan ay nagtipon-tipon sa palibot ni Jeremias sa bahay ni Jehova.",
       },
       {
         verse: 10,
@@ -4067,13 +4077,23 @@ export const bookOfJeremiah = {
       },
       {
         verse: 11,
+        speaker: "Narrator",
+        text: "Sinabi ng mga saserdote at mga propeta sa matataas na opisyal at sa buong bayan: ",
+      },
+      {
+        verse: 11,
         speaker: "Mga Saserdote at mga Propeta",
-        text: "Sinabi ng mga saserdote at mga propeta sa matataas na opisyal at sa buong bayan: “Nararapat sa parusang kamatayan ang taong ito, dahil humula siya laban sa lunsod na ito gaya ng narinig ninyo mismo.”",
+        text: "“Nararapat sa parusang kamatayan ang taong ito, dahil humula siya laban sa lunsod na ito gaya ng narinig ninyo mismo.”",
+      },
+      {
+        verse: 12,
+        speaker: "Narrator",
+        text: "Pagkatapos ay sinabi ni Jeremias sa lahat ng matataas na opisyal at sa buong bayan: ",
       },
       {
         verse: 12,
         speaker: "Jeremias",
-        text: "Pagkatapos ay sinabi ni Jeremias sa lahat ng matataas na opisyal at sa buong bayan: “Si Jehova ang nagsugo sa akin para ihula laban sa bahay na ito at sa lunsod na ito ang lahat ng salitang narinig ninyo.",
+        text: "“Si Jehova ang nagsugo sa akin para ihula laban sa bahay na ito at sa lunsod na ito ang lahat ng salitang narinig ninyo.",
       },
       {
         verse: 13,
@@ -4092,8 +4112,13 @@ export const bookOfJeremiah = {
       },
       {
         verse: 16,
+        speaker: "Narrator",
+        text: "Pagkatapos, sinabi ng matataas na opisyal at ng buong bayan sa mga saserdote at sa mga propeta: ",
+      },
+      {
+        verse: 16,
         speaker: "Mga Pinuno at Buong Bayan",
-        text: "Pagkatapos, sinabi ng matataas na opisyal at ng buong bayan sa mga saserdote at sa mga propeta: “Hindi nararapat ang hatol na kamatayan sa lalaking ito, dahil nagsalita siya sa atin sa ngalan ni Jehova na ating Diyos.”",
+        text: "“Hindi nararapat ang hatol na kamatayan sa lalaking ito, dahil nagsalita siya sa atin sa ngalan ni Jehova na ating Diyos.”",
       },
       {
         verse: 17,
