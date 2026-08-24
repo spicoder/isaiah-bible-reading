@@ -4523,12 +4523,12 @@ export const bookOfJeremiah = {
       },
       {
         verse: 24,
-        speaker: "Narrator",
+        speaker: "Jehova",
         text: "“At sabihin mo kay Semaias ng Nehelam,",
       },
       {
         verse: 25,
-        speaker: "Semaias",
+        speaker: "Jehova",
         text: "‘Ito ang sinabi ni Jehova ng mga hukbo, ang Diyos ng Israel: “Dahil nagpadala ka ng mga liham sa pangalan mo sa buong bayan na nasa Jerusalem, sa saserdoteng si Zefanias na anak ni Maaseias, at sa lahat ng saserdote, na nagsasabi,",
       },
       {
